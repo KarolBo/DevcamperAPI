@@ -1,6 +1,7 @@
 const Bootcamp = require('../models/Bootcamp');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const geocoder = require('../utils/geocoder');
 
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
         const bootcamps = await Bootcamp.find();
@@ -53,5 +54,28 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
     res.status(201).json({ 
         success: true, 
         data: bootcamp
+    });
+});
+
+exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
+    const { zipcode, distance } = req.params;
+
+    // Get coordinates from geocoder
+    const loc = await geocoder.geocode(zipcode);
+    const lat = loc[0].latitude;
+    const lng = loc[0].longitude;
+
+    // Calculate radius using radians
+    // Divide distance by radius of Earth (6 378.1 km)
+    const radius = distance / 6378.1;
+
+    const bootcamps = await Bootcamp.find({
+        location: {$geoWithin: { $centerSphere: [ [ lng, lat ], radius ] } }
+    });
+
+    res.status(200).json({
+        success: true, 
+        conut: bootcamps.length,
+        data: bootcamps
     });
 });
