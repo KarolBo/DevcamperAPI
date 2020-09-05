@@ -2,7 +2,6 @@ const Bootcamp = require('../models/Bootcamp');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const geocoder = require('../utils/geocoder');
-const { query } = require('express');
 
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
         // Copy req.query

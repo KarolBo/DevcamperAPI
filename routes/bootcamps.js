@@ -6,7 +6,13 @@ const { getBootcamps,
         deleteBootcamp,
         getBootcampsInRadius } = require('../controllers/bootcamp');
 
+// Include other resource routers
+const courseRouter = require('./courses');
+
 const router = express.Router();
+
+// Reroute
+router.use('/:bootcampId/courses', courseRouter);
 
 router.route('/')
 .get(getBootcamps)

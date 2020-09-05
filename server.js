@@ -14,6 +14,7 @@ const logger = require('./middleware/logger');
 
 // Route files
 const bootcamps = require('./routes/bootcamps');
+const courses = require('./routes/courses');
 
 const app = express();
 
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Mount routers
 app.use('/api/bootcamps', bootcamps);
+app.use('/api/courses', courses);
 
 app.use(errorHandler);
 
