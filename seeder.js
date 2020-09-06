@@ -27,10 +27,10 @@ const importBootcamps = async (path=`${__dirname}/_data/`) => {
         console.log('Bootcamps Imported');
 
         // Courses 
-        const courses_file = fs.readFileSync(path+'courses.json', 'utf-8');
-        const courses_object = JSON.parse(courses_file);
-        await Courses.create(courses_object)
-        console.log('Courses Imported');
+        // const courses_file = fs.readFileSync(path+'courses.json', 'utf-8');
+        // const courses_object = JSON.parse(courses_file);
+        // await Courses.create(courses_object)
+        // console.log('Courses Imported');
 
         process.exit();
     } catch (err) {
