@@ -48,10 +48,14 @@ UserSchema.pre('save', async function(next) {
 });
 
 // Sign JWT and return
-UserSchema.methods.getSignedJwtToken = function {
-    jwt.sign({ 
-        id: this._id
-    });
+UserSchema.methods.getSignedJwtToken = function() {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, 
+        { expiresIn: process.env.JWT_EXPIRE });
 }
+
+// Match entered passwort to the hashed one hashed 
+ UserSchema.methods.matchPassword = async function(enteredPassword) {
+     return bcrypt.compare(enteredPassword, this.password);
+ }
 
 module.exports = mongoose.model('User', UserSchema);
