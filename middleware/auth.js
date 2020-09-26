@@ -3,7 +3,7 @@ const asyncHandler = require('./async');
 const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
 
-// Protect routes
+// Protect routes - adds 'user' field to req
 exports.protect = asyncHandler(async (req, res, next) => {
     let token;
 
@@ -20,7 +20,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
         
     // Verify token
     try {
-        const decoded = jwt.decode(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
         console.log(decoded);
 
@@ -31,3 +31,13 @@ exports.protect = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse('Not authorized to visit this route', 401));
     }
 });
+
+// Grant access to specyfic roles
+exports.authorize = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role))
+            return next(new ErrorResponse(`User role '${req.user.role}' is not authorized to access this route`, 403));
+        
+        next();
+    }
+};
