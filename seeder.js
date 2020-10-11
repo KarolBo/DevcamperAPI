@@ -8,6 +8,7 @@ dotenv.config({ path: './config/config.env'});
 const Boobcamp = require('./models/Bootcamp');
 const Course = require('./models/Course');
 const User = require('./models/User');
+const Review = require('./models/Review');
 
 
 // Connect to DB
@@ -39,6 +40,12 @@ const importData = async (path=`${__dirname}/_data/`) => {
         await User.create(users_object)
         console.log('Users Imported');
 
+        // Reviews 
+        const reviews_file = fs.readFileSync(path+'reviews.json', 'utf-8');
+        const reviews_object = JSON.parse(reviews_file);
+        await Review.create(reviews_object)
+        console.log('Reviews Imported');
+
         process.exit();
     } catch (err) {
         console.log(err);
@@ -56,6 +63,9 @@ const deleteData = async () => {
 
         await User.deleteMany();
         console.log('Users Deleted');
+
+        await Review.deleteMany();
+        console.log('Reviews Deleted');
 
         process.exit();
     } catch (err) {

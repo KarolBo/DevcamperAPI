@@ -19,6 +19,8 @@ const logger = require('./middleware/logger');
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
 const auth = require('./routes/auth');
+const users = require('./routes/users');
+const reviews = require('./routes/reviews');
 
 const app = express();
 
@@ -44,6 +46,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/bootcamps', bootcamps);
 app.use('/api/courses', courses);
 app.use('/api/auth', auth);
+app.use('/api/users', users);
+app.use('/api/reviews', reviews);
 
 app.use(errorHandler);
 
